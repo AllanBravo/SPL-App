@@ -10,7 +10,9 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *">
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline'; font-src * data: URIs ">
+
 
     <!-- Required meta tags-->
     <meta charset="utf-8">
@@ -26,6 +28,7 @@
     <link rel="stylesheet" href="css/icons.css">
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/app.css">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -42,11 +45,15 @@
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
-                        <div class="left"><i class="icon icon-back"></i></div>
-                        <div class="title"><h3>Semanario Primer Lector</h3></div>
-                        <div class="right"><i class="icon icon-forward"></i></div>
+                        <!--<div class="left"><i class="icon icon-back"></i></div> -->
+                        <div class="title"><h2>Semanario Primer Lector</h2></div>
+                        <!-- <div class="right"><i class="icon icon-forward"></i></div> -->
                     </div>
                 </div>
+              </hr>
+
+
+                <!--<img src="spl.jpg">-->
         
             
         
@@ -61,7 +68,7 @@
         <div class="item-inner">
           <div class="item-title item-label">E-mail</div>
           <div class="item-input-wrap">
-            <input type="email" name="email" placeholder="E-mail">
+            <input type="email" name="email" id="email" placeholder="E-mail">
           </div>
         </div>
       </div>
@@ -71,7 +78,7 @@
         <div class="item-inner">
           <div class="item-title item-label">Contraseña</div>
           <div class="item-input-wrap">
-            <input type="text" name="contraseña" placeholder="Contraseña">
+            <input type="password" name="contraseña" id="clave" placeholder="Contraseña">
           </div>
         </div>
       </div>
@@ -90,10 +97,47 @@
     </li>
   </ul>
 </form>
-<div class="block block-strong row" id="botones">
-  <div class="col"><a class="button convert-form-to-data" href="#">Ingresar</a></div>
-  <div class="col"><a class="button fill-form-from-data" href="#" id="enter">Registrarse</a></div>
+
+<div class="row" id="botones">
+  <div class="col"><a class="button convert-form-to-data" href="#" id="ingreso">Ingresar</a></div>
 </div>
+<div class="row" id="botones">
+<div class="col"><a class="button fill-form-from-data" href="#" id="enter">Registrarse</a></div>
+</div>
+<br/> 
+<hr/>
+<br/>
+
+<p><a href="#" data-popup=".my-popup" class="popup-open">Sobre nosotros</a></p>
+
+                      <!-- 
+                        EL POPUP:
+                        - Ver que la relacion se propude con la clase .my-popup
+                        - El o los elementos que lo abren tienen la clase .popup-open y abrirá el popup definido en data-popup
+                        - El o los elementos que lo cierren tienen la clase popup-close y se cerrará a sí mismo. 
+                       -->
+                      <div class="popup my-popup">
+                        <div class="view">
+                          <div class="page">
+                            <div class="navbar">
+                              <div class="navbar-bg"></div>
+                              <div class="navbar-inner">
+                                <div class="title">¿Quienes somos?</div>
+                                <div class="right">
+                                  <!-- Link to close popup -->
+                                  <a class="link popup-close">Cerrar</a>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="page-content">
+                              Contenido del popup
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
 
   
 
@@ -106,8 +150,35 @@
             </div>
         </div>
     </div>
-  
 
+
+  
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<!-- <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script> -->
+
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
+
+     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDEGAYhuB7-vrb2b20EIx7lze2fbuUQ17w",
+    authDomain: "spl-app-abaad.firebaseapp.com",
+    databaseURL: "https://spl-app-abaad.firebaseio.com",
+    projectId: "spl-app-abaad",
+    storageBucket: "spl-app-abaad.appspot.com",
+    messagingSenderId: "903764480502",
+    appId: "1:903764480502:web:6bfe1e8eaa3e787ae737d7"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
 
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="lib/framework7/js/framework7.bundle.min.js"></script>

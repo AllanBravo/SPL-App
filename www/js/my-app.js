@@ -2,6 +2,9 @@
 // If we need to use custom DOM library, let's save it to $$ variable:
 var $$ = Dom7;
 
+var mostrarErrores = 1;
+
+
 var app = new Framework7({
     // App root element
     root: '#app',
@@ -27,47 +30,14 @@ var mainView = app.views.create('.view-main');
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
-    console.log("Device is ready!");
+    
+    fnMostrarError("Device is ready!");
 
-        // The core Firebase JS SDK is always required and must be listed first -->
-     var url="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"
-
-// TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyDEGAYhuB7-vrb2b20EIx7lze2fbuUQ17w",
-    authDomain: "spl-app-abaad.firebaseapp.com",
-    databaseURL: "https://spl-app-abaad.firebaseio.com",
-    projectId: "spl-app-abaad",
-    storageBucket: "spl-app-abaad.appspot.com",
-    messagingSenderId: "903764480502",
-    appId: "1:903764480502:web:6bfe1e8eaa3e787ae737d7"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+        
 
 
-    $$("#enter").on("click", function(){
-        var email = "usuario@dominio.com";
-    var password = "123456";
-    firebase.auth().createUserWithEmailAndPassword(email, passowrd)
-    .catch(function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        if (errorCode == "auth/weak-password") {
-            alert("Clave muy debil.");
-        } else {
-            alert(errorMessage);
-        }
-        console.log(error);
-
-
-
-
-    });
-    });
+    $$("#enter").on('click', fnRegistro);
+    $$("#ingreso").on('click', fnIngreso);
 
     
 
@@ -76,19 +46,117 @@ $$(document).on('deviceready', function() {
 // Option 1. Using one 'page:init' handler for all pages
 $$(document).on('page:init', function (e) {
     // Do something here when page loaded and initialized
-    console.log(e);
+    fnMostrarError(e);
 })
 
 // Option 2. Using live 'page:init' event handlers for each page
 $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
-    console.log(e);
+    fnMostrarError(e);
     
 })
 
 
+
+
 /** FUNCIONES PROPIAS **/
 
+function fnRegistro() {
+
+    var elMail = $$('#email').val(); // es un input... uso val!
+    var laClave = $$('#clave').val(); // es un input... uso val!
+
+    email = elMail;
+
+    var huboError = 0;
+
+    firebase.auth().createUserWithEmailAndPassword(elMail, laClave)          
+      .catch(function(error) {       
+        // Handle Errors here.
+        huboError = 1;
+        var errorCode = error.code;
+        var errorMessage = error.message; 
+        
+        fnMostrarError(errorCode);
+        fnMostrarError(errorMessage);
+      })
+      .then(function(){
+          if(huboError == 0){
+            // alert('OK');
+            // lo seteo en el panel.... contenedor lblEmail
+            //$$('#lblEmail').text(elMail);   // es una etiqueta html. Text va sin formato
+            mainView.router.navigate("/secondpage/");
+          }
+      });
+}
+
+
+function fnIngreso() {
+
+
+    email = $$('#email').val();
+    var clave = $$('#clave').val();
+       
+//Se declara la variable huboError (bandera)
+    var huboError = 0;
+        
+    firebase.auth().signInWithEmailAndPassword(email, clave)
+        .catch(function(error){
+//Si hubo algun error, ponemos un valor referenciable en la variable huboError
+            huboError = 1;
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            fnMostrarError(errorMessage);
+            fnMostrarError(errorCode);
+        })
+        .then(function(){   
+//En caso de que esté correcto el inicio de sesión y no haya errores, se dirige a la siguiente página
+            if(huboError == 0){
+
+                tipoUsuario = "";
+
+                // recuperar el tipo de usuario segun el email logueado....
+                // REF: https://firebase.google.com/docs/firestore/query-data/get-data
+                // TITULO: Obtén un documento
+                
+                refUsuarios.doc(email).get().then(function(doc) {
+                      if (doc.exists) {
+                          //console.log("Document data:", doc.data());
+                          //console.log("Tipo de Usuario: " + doc.data().tipo );
+                          tipoUsuario = doc.data().tipo;
+
+                          if ( tipoUsuario == "VIS" ) {
+                              mainView.router.navigate("/panel/");
+                          }
+                          if ( tipoUsuario == "ADM" ) {
+                              mainView.router.navigate("/panel_admin/");
+                          }
+                          
+
+
+                      } else {
+                          // doc.data() will be undefined in this case
+                          //console.log("No such document!");
+                      }
+                }).catch(function(error) {
+                    console.log("Error getting document:", error);
+                });
+
+
+            }
+
+        }); 
 
 
 
+}
+
+
+
+
+
+function fnMostrarError(txt) {
+  if (mostrarErrores == 1) {
+      console.log("ERROR: " + txt);
+  }
+}

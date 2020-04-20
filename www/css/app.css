@@ -5,12 +5,22 @@
 }
 .button {
 	background-color: blue;
-	color: black;
 	color: white;
+	height: 6vh;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 20px;
+	font: arial;
 }
 #botones {
-	background-color: grey;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .navbar {
 	height: 12vh;
+}
+h2 {
+	font-family: 'PT Serif', serif;
+	font-size: 32px;
 }
