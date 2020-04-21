@@ -1,4 +1,7 @@
 /* Your app custom styles here */
+/* background-image: url(./img/FondoAPP.png) !important;
+    background-size: contain !important; */
+
 * {
 	padding: 0;
 	margin: 0;
@@ -13,14 +16,30 @@
 	font: arial;
 }
 #botones {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
 .navbar {
-	height: 12vh;
+	height: 10vh;
 }
 h2 {
 	font-family: 'PT Serif', serif;
-	font-size: 32px;
+	font-size: 25px;
+	margin-left: 35px;
 }
+
+.logo {
+	width: 100px;
+	height: 100px;
+	margin-top: 40px;
+	margin-bottom: 0;
+	size: contain;
+}
+
+.popup-open {
+	color: black;
+	font-size: 20px;
+	font-family: 'PT Serif', serif;
+}
+
