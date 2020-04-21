@@ -28,6 +28,10 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
+//Base de Datos
+
+var db, refUsuarios, refTiposUsuarios;
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     
@@ -39,6 +43,8 @@ $$(document).on('deviceready', function() {
     $$("#enter").on('click', fnRegistro);
     $$("#ingreso").on('click', fnIngreso);
 
+
+
     
 
 });
@@ -47,6 +53,11 @@ $$(document).on('deviceready', function() {
 $$(document).on('page:init', function (e) {
     // Do something here when page loaded and initialized
     fnMostrarError(e);
+
+    
+
+
+
 })
 
 // Option 2. Using live 'page:init' event handlers for each page
@@ -126,7 +137,7 @@ function fnIngreso() {
                           tipoUsuario = doc.data().tipo;
 
                           if ( tipoUsuario == "VIS" ) {
-                              mainView.router.navigate("/panel/");
+                              mainView.router.navigate("/secondpage/");
                           }
                           if ( tipoUsuario == "ADM" ) {
                               mainView.router.navigate("/panel_admin/");
