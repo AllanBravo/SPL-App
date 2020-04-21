@@ -34,6 +34,17 @@ var db, refUsuarios, refTiposUsuarios;
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
+
+    //seteo variables BD
+
+    db = firebase.firestore();
+    refUsuarios = db.collection("USUARIOS");
+    refTiposUsuarios = db.collection("TIPO_USUARIO");
+
+    var iniciarDatos = 0;
+    if (iniciarDatos == 1) {
+        fnIniciarDatos();
+    }
     
     fnMostrarError("Device is ready!");
 
@@ -64,6 +75,11 @@ $$(document).on('page:init', function (e) {
 $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     fnMostrarError(e);
+
+    //$$("#guardar").on("click", fnGuardarDP);
+
+    $$("#abrirCamara").on("click", getImage);
+    $$("#abrirGaleria").on("click", selImage);
     
 })
 
@@ -101,6 +117,8 @@ function fnRegistro() {
       });
 }
 
+
+//HAY QUE VER ESTO!! 
 
 function fnIngreso() {
 
@@ -162,6 +180,36 @@ function fnIngreso() {
 
 }
 
+//INICIO CAMARA
+
+function getImage() {
+    navigator.camera.getPicture(onSuccess,onError,
+        {
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: Camera.PictureSourceType.CAMERA
+        });
+}
+
+function selImage() {
+    navigator.camera.getPicture(onSuccess,onError,
+        {
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        });
+}
+
+function onError(){
+    console.log("error camara");
+}
+
+function onSuccess(imageData) {
+    var image = document.getElementById("myImage");
+    image.src = imageData;
+}
+
+//FIN CAMARA
 
 
 
