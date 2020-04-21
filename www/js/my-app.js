@@ -32,6 +32,8 @@ var mainView = app.views.create('.view-main');
 
 var db, refUsuarios, refTiposUsuarios;
 
+var nombre, apellido , paginaweb , telefono , fnac , email;
+
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
 
@@ -76,7 +78,7 @@ $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     fnMostrarError(e);
 
-    //$$("#guardar").on("click", fnGuardarDP);
+    $$("#guardar").on("click", fnGuardarDP);
 
     $$("#abrirCamara").on("click", getImage);
     $$("#abrirGaleria").on("click", selImage);
@@ -176,6 +178,29 @@ function fnIngreso() {
 
         }); 
 
+
+
+}
+
+function fnGuardarDP() {
+    nombre = $$("#nombre").val();
+    apellido = $$('#apellido').val();
+    paginaweb = $$('#paginaweb').val();
+    telefono = $$('#telefono').val();
+    fnac = $$('#fnac').val();
+
+    //clave: variable de datos
+
+    var data = {
+        nombre: nombre,
+        apellido: apellido,
+        web: paginaweb,
+        telefono: telefono,
+        fnac: fnac,
+        tipo: "VIS",
+    }
+
+    refUsuarios.doc(email).set(data);
 
 
 }
