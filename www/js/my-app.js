@@ -22,6 +22,10 @@ var app = new Framework7({
         path: '/secondpage/',
         url: 'secondpage.html',
       },
+      {
+        path: '/paginaprincipal/',
+        url: 'paginaprincipal.html',
+      },
     ]
     // ... other parameters
   });
@@ -157,7 +161,7 @@ function fnIngreso() {
                           tipoUsuario = doc.data().tipo;
 
                           if ( tipoUsuario == "VIS" ) {
-                              mainView.router.navigate("/secondpage/");
+                              mainView.router.navigate("/paginaprincipal/");
                           }
                           if ( tipoUsuario == "ADM" ) {
                               mainView.router.navigate("/panel_admin/");
