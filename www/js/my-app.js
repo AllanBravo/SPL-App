@@ -229,13 +229,73 @@ function selImage() {
         });
 }
 
+
+
 function onError(){
     console.log("error camara");
 }
 
 function onSuccess(imageData) {
-    var image = document.getElementById("myImage");
-    image.src = imageData;
+    //var image = document.getElementById("myImage");
+    //image.src = imageData;
+
+    var storage = firebase.storage();
+    var storageRef = firebase.storage().ref();
+    /*storageRef.child('images/stars.jpg').getDownloadURL().then(function(url) {
+  // `url` is the download URL for 'images/stars.jpg'
+
+  // This can be downloaded directly:
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function(event) {
+    var blob = xhr.response;
+  };
+  xhr.open('GET', url);
+  xhr.send();
+
+  // Or inserted into an <img> element:
+  var img = document.getElementById('myImage');
+  img.src = url;
+ }).catch(function(error) {
+  // Handle any errors
+ });*/
+
+    var getFileBlob = function(url, cb) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.responseType = "blob";
+        xhr.addEventListener("load", function(){
+            cb(xhr.response);
+        });
+        xhr.send();
+    }
+
+    var blobToFile = function(blob, name) {
+        blob.lastModifiedDate = new Date();
+        blob.name = name;
+        return blob;
+    }
+
+    var getFileObject = function(filePathOrUrl, cb) {
+        getFileBlob(filePathOrUrl, function(blob){
+            cb(blobToFile(blob, "test.jpg"));
+        });
+    }
+
+        getFileObject(imageData, function(fileObject) {
+          var uploadTask = storageRef.child('images/test.jpg').put(fileObject);
+
+          uploadTask.on('state_changed', function(snapshot) {
+             console.log(snapshot);
+          }, function(error) {
+             console.log(error);
+          }, function() {
+             var downloadURL = uploadTask.snapshot.downloadURL;
+             console.log(downloadURL);
+             // handle image here
+          });
+       });
+
 }
 
 //FIN CAMARA
