@@ -14,12 +14,23 @@
 	font-size: 15px;
 	border-radius: 20px;
 	font: arial;
-}
+} 
 #botones {
 	margin-bottom: 15px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
+.link {
+	font-size: 20px;
+	color: black;
+	margin-bottom: 10px;
+}
+
+#cerrarpanel {
+	font-size: 15px;
+}
+
 .navbar {
 	height: 10vh;
 }

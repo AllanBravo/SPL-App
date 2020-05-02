@@ -26,6 +26,10 @@ var app = new Framework7({
         path: '/paginaprincipal/',
         url: 'paginaprincipal.html',
       },
+      {
+        path: '/chat/',
+        url: 'chat.html',
+      },
     ]
     // ... other parameters
   });
@@ -76,6 +80,12 @@ $$(document).on('page:init', function (e) {
 
 
 })
+
+// Option 2. Using live 'page:init' event handlers for each page
+/*$$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    fnMostrarError(e);*/
+
 
 // Option 2. Using live 'page:init' event handlers for each page
 $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
@@ -192,6 +202,7 @@ function fnGuardarDP() {
     paginaweb = $$('#paginaweb').val();
     telefono = $$('#telefono').val();
     fnac = $$('#fnac').val();
+    clave= $$('#clave').val();
 
     //clave: variable de datos
 
@@ -201,6 +212,7 @@ function fnGuardarDP() {
         web: paginaweb,
         telefono: telefono,
         fnac: fnac,
+        clave: clave,
         tipo: "VIS",
     }
 
@@ -235,30 +247,27 @@ function onError(){
     console.log("error camara");
 }
 
+function idRandom(){
+  var result = "";
+  var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var caracteresLength = caracteres.length;
+  for(var i = 0; i < 25; i++){
+    result += caracteres.charAt(Math.floor(Math.random() * caracteresLength ));
+  }
+  return result;
+}
+
 function onSuccess(imageData) {
     //var image = document.getElementById("myImage");
     //image.src = imageData;
 
+    var nombreAleatorio = idRandom;
+    var Imagenes = nombreAleatorio + ".jpg";
+    var direccionImagen = "images/" + Imagenes;
+
     var storage = firebase.storage();
     var storageRef = firebase.storage().ref();
-    /*storageRef.child('images/stars.jpg').getDownloadURL().then(function(url) {
-  // `url` is the download URL for 'images/stars.jpg'
-
-  // This can be downloaded directly:
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function(event) {
-    var blob = xhr.response;
-  };
-  xhr.open('GET', url);
-  xhr.send();
-
-  // Or inserted into an <img> element:
-  var img = document.getElementById('myImage');
-  img.src = url;
- }).catch(function(error) {
-  // Handle any errors
- });*/
+    
 
     var getFileBlob = function(url, cb) {
         var xhr = new XMLHttpRequest();
@@ -278,23 +287,43 @@ function onSuccess(imageData) {
 
     var getFileObject = function(filePathOrUrl, cb) {
         getFileBlob(filePathOrUrl, function(blob){
-            cb(blobToFile(blob, "test.jpg"));
+            cb(blobToFile(blob, Imagenes));
         });
     }
 
         getFileObject(imageData, function(fileObject) {
-          var uploadTask = storageRef.child('images/test.jpg').put(fileObject);
+          var uploadTask = storageRef.child(direccionImagen).put(fileObject);
 
           uploadTask.on('state_changed', function(snapshot) {
              console.log(snapshot);
           }, function(error) {
              console.log(error);
           }, function() {
-             var downloadURL = uploadTask.snapshot.downloadURL;
-             console.log(downloadURL);
+             //var downloadURL = uploadTask.snapshot.downloadURL;
+             //console.log(downloadURL);
              // handle image here
+             storageRef.child(Imagenes).getDownloadURL().then(function(url) {
+             // `url` is the download URL for 'images/stars.jpg'
+
+             // This can be downloaded directly:
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = function(event) {
+            var blob = xhr.response;
+            };
+            xhr.open('GET', url);
+            xhr.send();
+
+             // Or inserted into an <img> element:
+            var img = document.getElementById('myImage');
+            img.src = imageData;
+            }).catch(function(error) {
+             // Handle any errors
+            }); 
           });
        });
+
+
 
 }
 
