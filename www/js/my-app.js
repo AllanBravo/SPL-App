@@ -81,11 +81,6 @@ $$(document).on('page:init', function (e) {
 
 })
 
-// Option 2. Using live 'page:init' event handlers for each page
-/*$$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
-    fnMostrarError(e);*/
-
 
 // Option 2. Using live 'page:init' event handlers for each page
 $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
@@ -99,10 +94,43 @@ $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
     
 })
 
+// Option 2. Using live 'page:init' event handlers for each page
+$$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) {
+    // Do something here when page with data-name="about" attribute loaded and initialized
+    fnMostrarError(e);
+
+    fnXML();
+    var parser, xmlDox;
+
+    function fnXML() {
+        url = "https://primerlector.com.ar/feed/";
+        app.request.get(url, function (data) {
+        console.log(data);
+
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(data,"text/xml");
+
+        alert(xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue);
+
+        $$('.article').html(data);
+        console.log('hola');
+        });
+    
+
+} 
+
+    
+    })
 
 
 
 /** FUNCIONES PROPIAS **/
+
+function crearNoticiaHtml(codigo) {
+    noticiaHTML = " ";
+      noticiaHTML += codigo + "<br>";
+      return noticiaHTML;
+}
 
 function fnRegistro() {
 
@@ -196,6 +224,8 @@ function fnIngreso() {
 
 }
 
+//BASE DE DATOS
+
 function fnGuardarDP() {
     nombre = $$("#nombre").val();
     apellido = $$('#apellido').val();
@@ -217,6 +247,12 @@ function fnGuardarDP() {
     }
 
     refUsuarios.doc(email).set(data);
+
+    var wrong = 0;
+
+    if (wrong==0) {
+        mainView.router.navigate("/paginaprincipal/");
+    }
 
 
 }
