@@ -1,4 +1,4 @@
-  
+
 // If we need to use custom DOM library, let's save it to $$ variable:
 var $$ = Dom7;
 
@@ -55,10 +55,10 @@ $$(document).on('deviceready', function() {
     if (iniciarDatos == 1) {
         fnIniciarDatos();
     }
-    
+
     fnMostrarError("Device is ready!");
 
-        
+
 
 
     $$("#enter").on('click', fnRegistro);
@@ -66,7 +66,7 @@ $$(document).on('deviceready', function() {
 
 
 
-    
+
 
 });
 
@@ -75,7 +75,7 @@ $$(document).on('page:init', function (e) {
     // Do something here when page loaded and initialized
     fnMostrarError(e);
 
-    
+
 
 
 
@@ -91,7 +91,7 @@ $$(document).on('page:init', '.page[data-name="secondpage"]', function (e) {
 
     $$("#abrirCamara").on("click", getImage);
     $$("#abrirGaleria").on("click", selImage);
-    
+
 })
 
 // Option 2. Using live 'page:init' event handlers for each page
@@ -114,23 +114,19 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
 
         $$('.article').html(data);
         console.log('hola');
+
         });
-    
 
-} 
 
-    
-    })
+}
+
+
+})
 
 
 
 /** FUNCIONES PROPIAS **/
 
-function crearNoticiaHtml(codigo) {
-    noticiaHTML = " ";
-      noticiaHTML += codigo + "<br>";
-      return noticiaHTML;
-}
 
 function fnRegistro() {
 
@@ -141,13 +137,13 @@ function fnRegistro() {
 
     var huboError = 0;
 
-    firebase.auth().createUserWithEmailAndPassword(elMail, laClave)          
-      .catch(function(error) {       
+    firebase.auth().createUserWithEmailAndPassword(elMail, laClave)
+      .catch(function(error) {
         // Handle Errors here.
         huboError = 1;
         var errorCode = error.code;
-        var errorMessage = error.message; 
-        
+        var errorMessage = error.message;
+
         fnMostrarError(errorCode);
         fnMostrarError(errorMessage);
       })
@@ -162,17 +158,16 @@ function fnRegistro() {
 }
 
 
-//HAY QUE VER ESTO!! 
 
 function fnIngreso() {
 
 
     email = $$('#email').val();
     var clave = $$('#clave').val();
-       
+
 //Se declara la variable huboError (bandera)
     var huboError = 0;
-        
+
     firebase.auth().signInWithEmailAndPassword(email, clave)
         .catch(function(error){
 //Si hubo algun error, ponemos un valor referenciable en la variable huboError
@@ -182,7 +177,7 @@ function fnIngreso() {
             fnMostrarError(errorMessage);
             fnMostrarError(errorCode);
         })
-        .then(function(){   
+        .then(function(){
 //En caso de que esté correcto el inicio de sesión y no haya errores, se dirige a la siguiente página
             if(huboError == 0){
 
@@ -191,7 +186,7 @@ function fnIngreso() {
                 // recuperar el tipo de usuario segun el email logueado....
                 // REF: https://firebase.google.com/docs/firestore/query-data/get-data
                 // TITULO: Obtén un documento
-                
+
                 refUsuarios.doc(email).get().then(function(doc) {
                       if (doc.exists) {
                           //console.log("Document data:", doc.data());
@@ -204,7 +199,7 @@ function fnIngreso() {
                           if ( tipoUsuario == "ADM" ) {
                               mainView.router.navigate("/panel_admin/");
                           }
-                          
+
 
 
                       } else {
@@ -218,7 +213,7 @@ function fnIngreso() {
 
             }
 
-        }); 
+        });
 
 
 
@@ -277,12 +272,6 @@ function selImage() {
         });
 }
 
-
-
-function onError(){
-    console.log("error camara");
-}
-
 function idRandom(){
   var result = "";
   var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -292,75 +281,69 @@ function idRandom(){
   }
   return result;
 }
-
 function onSuccess(imageData) {
-    //var image = document.getElementById("myImage");
-    //image.src = imageData;
 
-    var nombreAleatorio = idRandom;
-    var Imagenes = nombreAleatorio + ".jpg";
-    var direccionImagen = "images/" + Imagenes;
-
-    var storage = firebase.storage();
     var storageRef = firebase.storage().ref();
-    
 
+    nombreAleatorio = idRandom();
+
+    nombreImagen = nombreAleatorio + '.jpg';
+
+    direccionImagen = 'images/' + nombreImagen;
+    
+    console.log("Nombre aleatorio: " + nombreAleatorio);
+    console.log("Nombre imagen: " + nombreImagen);
+    console.log("Direccion imagen: " + direccionImagen);
     var getFileBlob = function(url, cb) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
+        urlimg = url;
         xhr.responseType = "blob";
-        xhr.addEventListener("load", function(){
+        xhr.addEventListener('load', function() {
             cb(xhr.response);
         });
         xhr.send();
-    }
-
+    };
     var blobToFile = function(blob, name) {
         blob.lastModifiedDate = new Date();
         blob.name = name;
         return blob;
-    }
-
+    };
     var getFileObject = function(filePathOrUrl, cb) {
-        getFileBlob(filePathOrUrl, function(blob){
-            cb(blobToFile(blob, Imagenes));
+        getFileBlob(filePathOrUrl, function(blob) {
+            cb(blobToFile(blob, nombreImagen));
         });
-    }
-
-        getFileObject(imageData, function(fileObject) {
-          var uploadTask = storageRef.child(direccionImagen).put(fileObject);
-
-          uploadTask.on('state_changed', function(snapshot) {
-             console.log(snapshot);
-          }, function(error) {
-             console.log(error);
-          }, function() {
-             //var downloadURL = uploadTask.snapshot.downloadURL;
-             //console.log(downloadURL);
-             // handle image here
-             storageRef.child(Imagenes).getDownloadURL().then(function(url) {
-             // `url` is the download URL for 'images/stars.jpg'
-
-             // This can be downloaded directly:
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            xhr.onload = function(event) {
-            var blob = xhr.response;
-            };
-            xhr.open('GET', url);
-            xhr.send();
-
-             // Or inserted into an <img> element:
-            var img = document.getElementById('myImage');
-            img.src = imageData;
+    };
+    getFileObject(imageData, function(fileObject) {
+        var uploadTask = storageRef.child(direccionImagen).put(fileObject);
+        uploadTask.on('state_changed', function(snapshot) {
+            console.log(snapshot);
+        }, function(error) {
+            console.log(error);
+        }, function() {
+            storageRef.child(direccionImagen).getDownloadURL().then(function(url) {
+              // `url` is the download URL for 'images/stars.jpg'
+              // This can be downloaded directly:
+              var xhr = new XMLHttpRequest();
+              xhr.responseType = 'blob';
+              xhr.onload = function(event) {
+                var blob = xhr.response;
+              };
+              xhr.open('GET', url);
+              xhr.send();
+              // Or inserted into an <img> element:
+              var img = document.getElementById('myImage');
+              img.src = url; 
             }).catch(function(error) {
-             // Handle any errors
-            }); 
-          });
-       });
+              // Handle any errors
+            });
+                });
+            });
+}
 
 
-
+function onError(){
+    console.log("error camara");
 }
 
 //FIN CAMARA
