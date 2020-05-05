@@ -111,6 +111,18 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
         xmlDoc = parser.parseFromString(data,"text/xml");
 
         alert(xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue);
+        alert(xmlDoc.getElementsByTagName("title")[2].childNodes[0].nodeValue);
+        alert(xmlDoc.getElementsByTagName("description")[2].childNodes[0].nodeValue);
+        alert(xmlDoc.getElementsByTagName("title")[3].childNodes[0].nodeValue);
+        alert(xmlDoc.getElementsByTagName("description")[3].childNodes[0].nodeValue);
+
+
+
+
+
+       
+
+        
 
         $$('.article').html(data);
         console.log('hola');
