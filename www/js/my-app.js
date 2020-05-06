@@ -40,7 +40,7 @@ var mainView = app.views.create('.view-main');
 
 var db, refUsuarios, refTiposUsuarios;
 
-var nombre, apellido , paginaweb , telefono , fnac , email;
+var nombre, apellido , paginaweb , telefono , fnac;  
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -101,6 +101,8 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
     // Do something here when page with data-name="about" attribute loaded and initialized
     fnMostrarError(e);
 
+    fnRecDatos();
+
 
     fnXML();
     var parser, xmlDox;
@@ -137,6 +139,7 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
 
 /** FUNCIONES PROPIAS **/
 
+//AUTENTICACION
 
 function fnRegistro() {
 
@@ -167,7 +170,7 @@ function fnRegistro() {
       });
 }
 
-
+// LOGIN
 
 function fnIngreso() {
 
@@ -262,6 +265,15 @@ function fnGuardarDP() {
 
 }
 
+function fnRecDatos(){
+    var email2 = email;
+  db.collection("USUARIOS").doc(email).get().then(function(doc){
+    if(doc.exists){
+      $$('.perfil').append('<ul><li>Nombre: '+doc.get("nombre")+'</li><li>Apellido: '+doc.get("apellido")+'</li></ul>');
+    }
+  });
+  console.log(email2);
+}
  
 //INICIO CAMARA
 
