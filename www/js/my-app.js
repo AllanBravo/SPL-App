@@ -56,6 +56,8 @@ $$(document).on('deviceready', function() {
         fnIniciarDatos();
     }
 
+
+
     fnMostrarError("Device is ready!");
 
 
@@ -99,6 +101,7 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
     // Do something here when page with data-name="about" attribute loaded and initialized
     fnMostrarError(e);
 
+
     fnXML();
     var parser, xmlDox;
 
@@ -115,11 +118,6 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
         alert(xmlDoc.getElementsByTagName("description")[2].childNodes[0].nodeValue);
         alert(xmlDoc.getElementsByTagName("title")[3].childNodes[0].nodeValue);
         alert(xmlDoc.getElementsByTagName("description")[3].childNodes[0].nodeValue);
-
-
-
-
-
        
 
         
@@ -264,6 +262,7 @@ function fnGuardarDP() {
 
 }
 
+ 
 //INICIO CAMARA
 
 function getImage() {
