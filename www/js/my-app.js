@@ -40,7 +40,7 @@ var mainView = app.views.create('.view-main');
 
 var db, refUsuarios, refTiposUsuarios;
 
-var nombre, apellido , paginaweb , telefono , fnac;  
+var nombre, apellido , paginaweb , telefono , fnac, email, imagen;  
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
@@ -101,6 +101,8 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
     // Do something here when page with data-name="about" attribute loaded and initialized
     fnMostrarError(e);
 
+    //fnRecImage();
+
     fnRecDatos();
 
 
@@ -110,21 +112,34 @@ $$(document).on('page:init', '.page[data-name="paginaprincipal"]', function (e) 
     function fnXML() {
         url = "https://primerlector.com.ar/feed/";
         app.request.get(url, function (data) {
-        console.log(data);
+        //console.log(data);
 
         parser = new DOMParser();
         xmlDoc = parser.parseFromString(data,"text/xml");
 
-        alert(xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue);
-        alert(xmlDoc.getElementsByTagName("title")[2].childNodes[0].nodeValue);
-        alert(xmlDoc.getElementsByTagName("description")[2].childNodes[0].nodeValue);
-        alert(xmlDoc.getElementsByTagName("title")[3].childNodes[0].nodeValue);
-        alert(xmlDoc.getElementsByTagName("description")[3].childNodes[0].nodeValue);
-       
+        
+        $$("#articles").append(
 
+            `<h2>${xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue}</h2>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[0].childNodes[0].nodeValue}</p>`+
+            `<h4>${xmlDoc.getElementsByTagName("title")[2].childNodes[0].nodeValue}</h4>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[1].childNodes[0].nodeValue}</p>`+
+            `<h4>${xmlDoc.getElementsByTagName("title")[3].childNodes[0].nodeValue}</h4>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[2].childNodes[0].nodeValue}</p>`+
+            `<h4>${xmlDoc.getElementsByTagName("title")[4].childNodes[0].nodeValue}</h4>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[3].childNodes[0].nodeValue}</p>`+
+            `<h4>${xmlDoc.getElementsByTagName("title")[5].childNodes[0].nodeValue}</h4>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[4].childNodes[0].nodeValue}</p>`+
+            `<h4>${xmlDoc.getElementsByTagName("title")[6].childNodes[0].nodeValue}</h4>`+
+            `<p>${xmlDoc.getElementsByTagName("description")[5].childNodes[0].nodeValue}</p>`
+            
+            
+            
+
+            );
         
 
-        $$('.article').html(data);
+        //$$('.article').html(data); 
         console.log('hola');
 
         });
@@ -241,6 +256,7 @@ function fnGuardarDP() {
     telefono = $$('#telefono').val();
     fnac = $$('#fnac').val();
     clave= $$('#clave').val();
+    
 
     //clave: variable de datos
 
@@ -251,6 +267,7 @@ function fnGuardarDP() {
         telefono: telefono,
         fnac: fnac,
         clave: clave,
+        imagen: direccionImagen,
         tipo: "VIS",
     }
 
@@ -260,20 +277,23 @@ function fnGuardarDP() {
 
     if (wrong==0) {
         mainView.router.navigate("/paginaprincipal/");
+    } else {
+        console.log("error");
     }
 
 
 }
 
 function fnRecDatos(){
-    var email2 = email;
   db.collection("USUARIOS").doc(email).get().then(function(doc){
     if(doc.exists){
-      $$('.perfil').append('<ul><li>Nombre: '+doc.get("nombre")+'</li><li>Apellido: '+doc.get("apellido")+'</li></ul>');
+      $$('.perfil').append('<p> '+doc.get("nombre")+' '+doc.get("apellido")+'</p>');
     }
   });
-  console.log(email2);
+  console.log(email);
 }
+
+
  
 //INICIO CAMARA
 

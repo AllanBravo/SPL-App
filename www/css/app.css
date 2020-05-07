@@ -7,8 +7,8 @@
 	margin: 0;
 }
 .button {
-	background-color: blue;
-	color: white;
+	background-color: #b8e994;
+	color: black;
 	height: 6vh;
 	text-align: center;
 	font-size: 15px;
@@ -28,13 +28,13 @@
 }
 
 #cerrarpanel {
-	font-size: 12px;
+	font-size: 15px;
 }
 
 .navbar {
 	height: 10vh;
 }
-h2 {
+h2, h1 {
 	font-family: 'PT Serif', serif;
 	font-size: 30px;
 	text-align: center;
@@ -51,9 +51,29 @@ h2 {
 
 .popup-open {
 	color: black;
-	font-size: 20px;
+	font-size: 15px;
 	font-family: 'PT Serif', serif;
 }
 
+#pup {
+	font-size: 15px;
+}
+
+.fotopop {
+	width: 91vw;
+	height: 40vh;
+}
+
+#fondo {
+	/*background-image: url(./vgg.jpg) !important;
+	background-size: 100% 100%;*/
+	background-color: #f7f1e3;
+    
+} 
+
+#noticias {
+	color: black;
+	font-size: 20px;
+}
 
 
